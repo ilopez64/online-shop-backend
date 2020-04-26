@@ -36,9 +36,15 @@ class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
         model = Purchase
         fields = ('id','user_id','final_price','transaction_date','payment_method')
         extra_kwargs = {'user_id' : {'read_only' : True}}
-    #user_id = serializers.SlugRelatedField(queryset=User.objects.all(), slug_field="id")
 
 class PurchasedItemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = PurchasedItem
         fields = ('item_id','invoice_id')
+
+#class PurchaseHistorySerializer(serializers.Serializer):
+#    #pk = serializers.Field()
+#    id = serializers.CharField()
+#    id = serializers.CharField()
+#    transaction_date = serializers.DateTimeField()
+
