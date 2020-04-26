@@ -42,9 +42,6 @@ class PurchasedItemSerializer(serializers.HyperlinkedModelSerializer):
         model = PurchasedItem
         fields = ('item_id','invoice_id')
 
-#class PurchaseHistorySerializer(serializers.Serializer):
-#    #pk = serializers.Field()
-#    id = serializers.CharField()
-#    id = serializers.CharField()
-#    transaction_date = serializers.DateTimeField()
-
+class PurchaseHistorySerializer(serializers.Serializer):
+    id = PurchaseSerializer(many=True)
+    item_id = PurchasedItemSerializer(many=True)

@@ -12,7 +12,7 @@ router.register(r'item', views.ItemViewSet)
 router.register(r'purchase', views.PurchaseViewSet)
 router.register(r'purchaseditem', views.PurchasedItemViewSet)
 router.register(r'login',views.LoginViewSet,basename='login')
-#router.register(r'purchasehistory',views.PurchaseHistoryViewSet,basename='purchasehistory')
+router.register(r'purchasehistory',views.PurchaseHistoryViewSet,basename='purchasehistory')
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

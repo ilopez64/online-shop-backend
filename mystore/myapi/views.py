@@ -2,7 +2,6 @@ from django.shortcuts import render
 
 from rest_framework import viewsets
 from rest_framework.parsers import JSONParser
-#from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
@@ -11,10 +10,24 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 
-from .serializers import UserSerializer, DiscountSerializer, ItemSerializer, PurchaseSerializer, PurchasedItemSerializer#, PurchaseHistorySerializer
+
+from .serializers import UserSerializer, DiscountSerializer, ItemSerializer, PurchaseSerializer, PurchasedItemSerializer, PurchaseHistorySerializer
 from .models import User, Discount, Item, Purchase, PurchasedItem
 from . import permissions
 import itertools
+
+
+#HISTORY
+
+from collections import namedtuple
+from rest_framework.request import Request
+from rest_framework.test import APIRequestFactory
+History = namedtuple('PurchaseHistory', ('id', 'item_id'))
+factory = APIRequestFactory()
+request = factory.get('/')
+serializer_context = {
+    'request': Request(request),
+}
 
 # Create your views here.
 
@@ -61,7 +74,7 @@ class PurchaseViewSet(viewsets.ModelViewSet):
 
 class PurchasedItemViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.PostOwnPurchase,IsAuthenticated)  
+    permission_classes = (IsAuthenticated,)  
     queryset = PurchasedItem.objects.all()
     serializer_class = PurchasedItemSerializer 
     
@@ -76,16 +89,15 @@ class LoginViewSet(viewsets.ViewSet):
         """Uses the ObtainAuthToken APIView to validate and create a token"""
         return ObtainAuthToken().post(request)
 
-#class PurchaseHistoryViewSet(viewsets.ViewSet):
-#    authentication_classes = (TokenAuthentication,)
-    #permission_classes = (permissions.PostOwnPurchase,IsAuthenticated)  
+class PurchaseHistoryViewSet(viewsets.ViewSet):
+    authentication_classes = (TokenAuthentication,)
+    """A simple ViewSet for listing the User Purchases and Purchased Items in your Timeline."""
 
-#    def list(self, request):
-#        queryset = list(itertools.chain(Purchase.objects.all(), PurchasedItem.objects.all()))
-#        serializer = PurchaseHistorySerializer(queryset, many=True)
-#        return Response(serializer.data) 
+    def list(self, request):
+        timeline = History(
+            id=Purchase.objects.filter(user_id=self.request.user),
+            item_id=PurchasedItem.objects.filter(),
+        )
+        serializer = PurchaseHistorySerializer(timeline,context=serializer_context)
+        return Response(serializer.data)
 
-    #def get_queryset(self):
-    #    qs = self.queryset.filter(user_id=self.request.user)
-    #    return qs
- 
