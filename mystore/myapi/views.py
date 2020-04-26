@@ -27,8 +27,6 @@ class UserViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.UpdateOwnUser,)
 
-    
-
 class DiscountViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)            
@@ -74,3 +72,11 @@ class LoginViewSet(viewsets.ViewSet):
     def create(self,request):
         """Uses the ObtainAuthToken APIView to validate and create a token"""
         return ObtainAuthToken().post(request)
+
+class PurchaseHistoryViewSet(viewsets.ViewSet):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.PostOwnPurchase,IsAuthenticated)   
+    def get_queryset(self):
+        qs = self.queryset.filter(user_id=self.request.user)
+        return qs
+ 
