@@ -11,7 +11,7 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 
-from .serializers import UserSerializer, DiscountSerializer, ItemSerializer, PurchaseSerializer, PurchasedItemSerializer, PurchaseHistorySerializer
+from .serializers import UserSerializer, DiscountSerializer, ItemSerializer, PurchaseSerializer, PurchasedItemSerializer#, PurchaseHistorySerializer
 from .models import User, Discount, Item, Purchase, PurchasedItem
 from . import permissions
 import itertools
