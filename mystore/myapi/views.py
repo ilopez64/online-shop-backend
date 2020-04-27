@@ -92,12 +92,18 @@ class LoginViewSet(viewsets.ViewSet):
 class PurchaseHistoryViewSet(viewsets.ViewSet):
     authentication_classes = (TokenAuthentication,)
     """A simple ViewSet for listing the User Purchases and Purchased Items in your Timeline."""
+    #id=Purchase.objects.filter(user_id=self.request.user)
 
     def list(self, request):
+        #id=Purchase.objects.filter(user_id=self.request.user
+        
         timeline = History(
             id=Purchase.objects.filter(user_id=self.request.user),
             item_id=PurchasedItem.objects.filter(),
         )
-        serializer = PurchaseHistorySerializer(timeline,context=serializer_context)
+        id=Purchase.objects.filter(user_id=self.request.user).values('id')
+        item_id=PurchasedItem.objects.filter().values('id')
+        h = (id | item_id)
+        serializer = PurchaseHistorySerializer(h,context=serializer_context)
         return Response(serializer.data)
 

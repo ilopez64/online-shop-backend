@@ -29,7 +29,7 @@ class DiscountSerializer(serializers.HyperlinkedModelSerializer):
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Item
-        fields = ('id','discount','item_type','title','item_length','year_released','creator','genre','price')
+        fields = ('id','discount','item_type','title','item_length','year_released','creator','genre','price','url')
 
 class PurchaseSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
