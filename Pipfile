@@ -12,6 +12,8 @@ djangorestframework = "*"
 mysqlclient = "*"
 django-cors-headers = "*"
 django-filter = "*"
+gunicorn = "*"
+django-heroku = "*"
 
 [requires]
 python_version = "3.8"
